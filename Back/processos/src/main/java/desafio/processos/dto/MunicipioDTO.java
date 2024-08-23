@@ -1,9 +1,10 @@
 package desafio.processos.dto;
 
-import desafio.processos.dto.ufDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -11,8 +12,10 @@ public class MunicipioDTO {
 
     private int id;
     private String nome;
-    private MicroRegiao mircoRegiao;
-    private RegiaoImediata regiaoImediata;
+    @JsonProperty("microrregiao")
+    private MicroRegiao microRegiao;
+    @JsonProperty("regiao-imediata")
+    private RegiaoImediata regiaoimediata;
 
 }
 
@@ -21,6 +24,7 @@ public class MunicipioDTO {
 class MicroRegiao{
     private int id;
     private String nome;
+    @JsonProperty("mesorregiao")
     private MesoRegiao mesoRegiao;
 }
 
@@ -29,6 +33,7 @@ class MicroRegiao{
 class MesoRegiao{
     private int id;
     private String nome;
+    @JsonProperty("UF")
     private ufDTO uf;
 }
 
@@ -37,6 +42,7 @@ class MesoRegiao{
 class RegiaoImediata{
     private int id;
     private String nome;
+    @JsonProperty("regiao-intermediaria")
     private RegiaoIntermediaria regiaoIntermediaria;
 }
 
@@ -45,5 +51,7 @@ class RegiaoImediata{
 class RegiaoIntermediaria{
     private int id;
     private String nome;
+    @JsonProperty("UF")
     private ufDTO uf;
 }
+

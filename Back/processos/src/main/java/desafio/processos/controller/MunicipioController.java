@@ -2,6 +2,8 @@ package desafio.processos.controller;
 
 import desafio.processos.dto.MunicipioDTO;
 import desafio.processos.dto.ufDTO;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,38 +11,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("municipio")
 public class MunicipioController {
 
-    String buscarPorMunicipio(Long id) {
-        return "https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + id + "/municipios";
-    }
 
+    String buscarPorUF= "https://servicodados.ibge.gov.br/api/v1/localidades/estados/";
     String urlIbgeMunicipio = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios";
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<MunicipioDTO> consultarMunicipio(@PathVariable Long id) {
+    public ResponseEntity<MunicipioDTO> consultarMunicipioPorID(@PathVariable Long id) {
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(id);
         String url = urlIbgeMunicipio + "/" + id.toString();
-        System.out.println("URL COM : " + url);
-        System.out.println(ResponseEntity.ok().body(restTemplate.getForEntity(url, Object.class)
-        ).getBody());
         return ResponseEntity.ok().body(restTemplate.getForEntity(url, MunicipioDTO.class)
         ).getBody();
 
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<ufDTO> consultarMunicipio(@PathVariable String nome) {
+    public ResponseEntity<MunicipioDTO> consultarMunicipioPorNome(@PathVariable String nome) {
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(nome);
         String url = urlIbgeMunicipio + "/" + nome;
-        System.out.println("URL COM : " + url);
-        return ResponseEntity.ok().body(restTemplate.getForEntity(url, ufDTO.class)
+        return ResponseEntity.ok().body(restTemplate.getForEntity(url, MunicipioDTO.class)
         ).getBody();
+    }
 
+    @GetMapping("/uf/{idUF}")
+    public ResponseEntity<List<MunicipioDTO>> consultarMunicipioPorUf(@PathVariable Long idUF) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = buscarPorUF+ idUF + "/municipios";
+
+        return ResponseEntity.ok().body(restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<MunicipioDTO>>() {
+                }
+        ).getBody());
     }
 }

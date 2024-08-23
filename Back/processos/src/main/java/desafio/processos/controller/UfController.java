@@ -36,15 +36,13 @@ public class UfController {
     @GetMapping("/{id}")
     public ResponseEntity<ufDTO> consultarUff(@PathVariable Long id) {
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(id);
         String url = urlIbgeUf+"/"+id.toString();
-        System.out.println("URL COM : "+url);
         return ResponseEntity.ok().body(restTemplate.getForEntity(url, ufDTO.class)
         ).getBody();
 
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<UfSimpDTO>>consultarUf() {
         RestTemplate restTemplate = new RestTemplate();
         List<UfSimpDTO> listaUfSimp = new ArrayList<>();
