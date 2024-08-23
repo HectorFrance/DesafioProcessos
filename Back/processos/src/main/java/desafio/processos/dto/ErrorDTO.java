@@ -1,4 +1,4 @@
-package desafio.processos.exception.dto;
+package desafio.processos.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

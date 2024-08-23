@@ -5,15 +5,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ufIBGEDTO {
+public class ufDTO {
     private int id;
     private String sigla;
     private String nome;
     private Regiao regiao;
-
-    public String nomeUf() {
-        return getNome();
-    }
 
 }
 
