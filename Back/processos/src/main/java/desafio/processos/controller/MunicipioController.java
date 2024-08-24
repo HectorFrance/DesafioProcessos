@@ -14,6 +14,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("municipio")
@@ -28,9 +29,13 @@ public class MunicipioController {
     public ResponseEntity<MunicipioDTO> consultarMunicipioPorID(@PathVariable Long id) {
         RestTemplate restTemplate = new RestTemplate();
         String url = urlIbgeMunicipio + "/" + id.toString();
-        return ResponseEntity.ok().body(restTemplate.getForEntity(url, MunicipioDTO.class)
-        ).getBody();
-
+        MunicipioDTO municipio= null;
+        try {
+            municipio = restTemplate.getForEntity(url, MunicipioDTO.class).getBody();
+        } catch (RestClientException e) {
+            throw new MunicipioNotFounException(e.getMessage(),id.toString());
+        }
+        return ResponseEntity.ok().body(municipio);
     }
 
     @GetMapping("/nome/{nome}")
@@ -39,7 +44,7 @@ public class MunicipioController {
         String url = urlIbgeMunicipio + "/" + nome;
         MunicipioDTO municipio= null;
         try {
-             municipio = restTemplate.getForEntity(url, MunicipioDTO.class).getBody();
+            municipio = restTemplate.getForEntity(url, MunicipioDTO.class).getBody();
         } catch (RestClientException e) {
             throw new MunicipioNotFounException(e.getMessage(),nome);
         }

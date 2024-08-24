@@ -2,6 +2,8 @@ package desafio.processos.controller;
 
 import desafio.processos.dto.UfSimpDTO;
 import desafio.processos.dto.ufDTO;
+import desafio.processos.exception.MunicipioNotFounException;
+import desafio.processos.exception.UfNotFounException;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/uf")
@@ -24,7 +28,7 @@ public class UfController {
     public ResponseEntity<List<ufDTO>> consultarUff() {
         RestTemplate restTemplate = new RestTemplate();
         return ResponseEntity.ok().body(restTemplate.exchange(
-                urlIbgeUf,
+                urlIbgeUf+"?orderBy=id",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ufDTO>>() {
@@ -37,8 +41,13 @@ public class UfController {
     public ResponseEntity<ufDTO> consultarUfPorId(@PathVariable Long id) {
         RestTemplate restTemplate = new RestTemplate();
         String url = urlIbgeUf+"/"+id.toString();
-        return ResponseEntity.ok().body(restTemplate.getForEntity(url, ufDTO.class)
-        ).getBody();
+        ufDTO uf =null;
+        try {
+            uf=restTemplate.getForEntity(url, ufDTO.class).getBody();
+        }catch (RestClientException e){
+            throw new UfNotFounException(e.getMessage(),id.toString());
+        }
+        return ResponseEntity.ok().body(uf);
 
     }
 
