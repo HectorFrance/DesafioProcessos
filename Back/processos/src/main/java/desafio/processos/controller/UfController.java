@@ -34,7 +34,7 @@ public class UfController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ufDTO> consultarUff(@PathVariable Long id) {
+    public ResponseEntity<ufDTO> consultarUfPorId(@PathVariable Long id) {
         RestTemplate restTemplate = new RestTemplate();
         String url = urlIbgeUf+"/"+id.toString();
         return ResponseEntity.ok().body(restTemplate.getForEntity(url, ufDTO.class)
@@ -43,7 +43,7 @@ public class UfController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UfSimpDTO>>consultarUf() {
+    public ResponseEntity<List<UfSimpDTO>>listarTodosUf() {
         RestTemplate restTemplate = new RestTemplate();
         List<UfSimpDTO> listaUfSimp = new ArrayList<>();
         List<ufDTO> listaUf = restTemplate.exchange(
