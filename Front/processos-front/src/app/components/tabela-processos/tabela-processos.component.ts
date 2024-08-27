@@ -29,11 +29,22 @@ export class TabelaProcessosComponent {
     this.p=this.processos[4];
   }
 
-  nomeUf(id:number):string{
+  nomeUf(id:number){
+    this.ufService.getById(id).subscribe((retornoApi) => {
+      let estado:Uf=retornoApi;
+      console.log(estado)
+      return estado.nome;
+    });
+  }
 
-    this.ufService.getById(id).subscribe(retornoApi => this.uf = retornoApi);
-    alert(this.uf.nome)
-    return this.uf.nome;
+  formatarNpu(npu:string):string{
+    let npuFormat = npu;
+    npuFormat= npuFormat.replace(/(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})/,"$1-$2.$3.$4.$5.$6")
+    return npuFormat
+}
+  formatarData(data:Date):string{
+    let dataFormat:Date = new Date(data);
+    return dataFormat.toLocaleDateString("pt-BR");
   }
 
   ngOnInit(){

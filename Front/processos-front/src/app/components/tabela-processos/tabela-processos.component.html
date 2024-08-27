@@ -11,9 +11,9 @@
     <tbody>
         <tr *ngFor="let p of processos">
             <td>{{p.id}}</td>
-            <td>{{p.npu}}</td>
-            <td>{{p.dataCadastro}}</td>
-            <td>{{p.dataVisualizacao}}</td>
+            <td>{{formatarNpu(p.npu)}}</td>
+            <td>{{formatarData(p.dataCadastro)}}</td>
+            <td>{{formatarData(p.dataVisualizacao)}}</td>
             <td>{{p.uf}}</td>
             <td>{{p.municipio}}</td>
             <td><button (click)="nomeUf(p.uf)">Alert</button></td>
