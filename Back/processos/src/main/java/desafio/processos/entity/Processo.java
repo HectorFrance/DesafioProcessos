@@ -13,21 +13,27 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name ="tb_processos")
+@Table(name ="processos")
 public class Processo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private long id;
 
+    @Column(name = "Npu")
     private String npu;
 
-    private LocalDate dataCadatro;
+    @Column(name = "data_Cadastro")
+    private LocalDate dataCadastro;
 
+    @Column(name = "data_visualizacao")
     private LocalDate dataVisualizacao;
 
-    private String municipio;
+    @Column(name = "municipio")
+    private long municipio;
 
-    private String uf;
+    @Column(name = "estado")
+    private long uf;
 
 }

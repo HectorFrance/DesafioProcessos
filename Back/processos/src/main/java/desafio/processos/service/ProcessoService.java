@@ -45,7 +45,7 @@ public class ProcessoService {
         updatedObj.get().setUf(obj.getUf());
         updatedObj.get().setNpu(obj.getNpu());
         updatedObj.get().setMunicipio(obj.getMunicipio());
-        updatedObj.get().setDataCadatro(obj.getDataCadatro());
+        updatedObj.get().setDataCadastro(obj.getDataCadastro());
         updatedObj.get().setDataVisualizacao(obj.getDataVisualizacao());
     }
 

@@ -1,0 +1,23 @@
+<form>
+    <img src="../../assets/processo.png">
+
+    <input type="text" placeholder="NPU" class="form-control">
+    <input type="date" placeholder="Data De Cadastro" class="form-control">
+    <input type="date" placeholder="Data De Visualização" class="form-control">
+    
+    <select class="form-select" aria-label="Default select example" (change)="selcionarEstado($event)">
+        <option selected disabled>Selecione o Estado</option>
+        <option *ngFor="let uf of ufs" value={{uf.id}}>{{uf.nome}}</option>
+      
+      </select>
+
+    <select class="form-select" aria-label="Default select example" [disabled]="selectMunicipioDisable" >
+        <option selected disabled>Selecione o Municipío</option> 
+        <option *ngFor="let m of municipios" value={{m.id}}>{{m.nome}}</option>
+    </select>
+
+    <input type="button" value="Cadastrar" *ngIf="btnCadastro" class="btn btn-primary">
+    <input type="button" value="Alterar" *ngIf="!btnCadastro" class="btn btn-warning">
+    <input type="button" value="Remover" *ngIf="!btnCadastro" class="btn btn-danger">
+    <input type="button" value="Cancelar" class="btn btn-secondary">
+</form>

@@ -1,6 +1,5 @@
 package desafio.processos.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ufDTO {
-    private int id;
+public class UfDTO {
+    private long id;
     private String sigla;
     private String nome;
     private Regiao regiao;
@@ -20,7 +19,7 @@ public class ufDTO {
 @NoArgsConstructor
 class Regiao {
 
-    private int id;
+    private long id;
     private String sigla;
     private String nome;
 

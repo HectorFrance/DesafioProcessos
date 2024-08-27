@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+        <th>ID</th>
+        <th>NPU</th>
+        <th>Data De Cadastro</th>
+        <th>Data De Visualização</th>
+        <th>Estado</th>
+        <th>Municipíos</th>
+        <th>Selecionar</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of processos">
+            <td>{{p.id}}</td>
+            <td>{{p.npu}}</td>
+            <td>{{p.dataCadastro}}</td>
+            <td>{{p.dataVisualizacao}}</td>
+            <td>{{p.uf}}</td>
+            <td>{{p.municipio}}</td>
+            <td><button (click)="nomeUf(p.uf)">Alert</button></td>
+        </tr>
+    </tbody>
+</table>

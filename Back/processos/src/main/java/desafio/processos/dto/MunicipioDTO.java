@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MunicipioDTO {
 
-    private int id;
+    private long id;
     private String nome;
     @JsonProperty("microrregiao")
     private MicroRegiao microRegiao;
@@ -22,7 +22,7 @@ public class MunicipioDTO {
 @Data
 @AllArgsConstructor
 class MicroRegiao{
-    private int id;
+    private long id;
     private String nome;
     @JsonProperty("mesorregiao")
     private MesoRegiao mesoRegiao;
@@ -31,16 +31,16 @@ class MicroRegiao{
 @Data
 @AllArgsConstructor
 class MesoRegiao{
-    private int id;
+    private long id;
     private String nome;
     @JsonProperty("UF")
-    private ufDTO uf;
+    private UfDTO uf;
 }
 
 @Data
 @AllArgsConstructor
 class RegiaoImediata{
-    private int id;
+    private long id;
     private String nome;
     @JsonProperty("regiao-intermediaria")
     private RegiaoIntermediaria regiaoIntermediaria;
@@ -49,9 +49,9 @@ class RegiaoImediata{
 @Data
 @AllArgsConstructor
 class RegiaoIntermediaria{
-    private int id;
+    private long id;
     private String nome;
     @JsonProperty("UF")
-    private ufDTO uf;
+    private UfDTO uf;
 }
 
