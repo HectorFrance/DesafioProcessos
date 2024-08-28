@@ -5,7 +5,7 @@
         <th>Data De Cadastro</th>
         <th>Data De Visualização</th>
         <th>Estado</th>
-        <th>Municipíos</th>
+        <th>Municipío</th>
         <th>Selecionar</th>
     </thead>
     <tbody>
@@ -16,7 +16,12 @@
             <td>{{formatarData(p.dataVisualizacao)}}</td>
             <td>{{p.uf}}</td>
             <td>{{p.municipio}}</td>
-            <td><button (click)="nomeUf(p.uf)">Alert</button></td>
+            <td>
+                <a routerLink='/form'><button class="btn-opc" (click)="findById(p)"><img src="../../assets/editpng.png" class="img-opc"></button></a>
+                <button class="btn-opc" (click)="deleteById(p.id)"><img src="../../assets/delete.png" class="img-opc"></button>
+            </td>
         </tr>
     </tbody>
 </table>
+
+<a routerLink='/form' class="centro"><button class="botao destaque">Cadastrar Processo</button></a>

@@ -1,5 +1,6 @@
 package desafio.processos.controller;
 
+import desafio.processos.dto.ProcessoDTO;
 import desafio.processos.entity.Processo;
 import desafio.processos.service.ProcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,22 +10,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+
 @RestController
-@RequestMapping(value = "/processos")
 @CrossOrigin(origins = "*")
+@RequestMapping(value = "/processos")
 public class ProcessoController {
 
     @Autowired
     private ProcessoService service;
 
+    @Autowired
+    private  MunicipioController municipioController;
+
+    @Autowired
+    private  UfController ufController;
+
     @GetMapping
-    public ResponseEntity<List<Processo>> getAll() {
-        return ResponseEntity.ok().body(service.getAll());
+    public ResponseEntity<List<ProcessoDTO>> getAll() {
+        ProcessoDTO processoDTO=new ProcessoDTO();
+        List<ProcessoDTO> lista= processoDTO.transformarLista(service.getAll(),municipioController,ufController);
+        return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Processo> getById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.getById(id));
+    public ResponseEntity<ProcessoDTO> getById(@PathVariable Long id) {
+        ProcessoDTO processoDTO=new ProcessoDTO(service.getById(id), municipioController,ufController);
+        return ResponseEntity.ok().body(processoDTO);
     }
 
     @PostMapping

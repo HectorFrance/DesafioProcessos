@@ -1,40 +1,46 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Processo } from '../../model/Processo';
 import { ProcessoService } from '../../service/processo.service';
 import { MunicipioService } from '../../service/municipio.service';
 import { UfService } from '../../service/uf.service';
-import { Uf } from '../../model/Uf';
+import { Router, RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-tabela-processos',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, RouterLink],
   templateUrl: './tabela-processos.component.html',
   styleUrl: './tabela-processos.component.css'
 })
-export class TabelaProcessosComponent {
+export class TabelaProcessosComponent implements OnInit{
 
   constructor(private processoService: ProcessoService, private municipioService:MunicipioService, 
-    private ufService:UfService){ }
+    private ufService:UfService, private  router:Router){ }
+
 
   processos:Processo[]=[];
-  p:Processo= new Processo;
-  uf = new Uf();
   carregarProcessos():void{
 
     this.processoService.getAll()
-    .subscribe(retornoApi => this.processos = retornoApi);
-    this.p=this.processos[4];
+    .subscribe((retornoApi) => {
+      this.processos = retornoApi
+      
+    });
   }
 
-  nomeUf(id:number){
-    this.ufService.getById(id).subscribe((retornoApi) => {
-      let estado:Uf=retornoApi;
-      console.log(estado)
-      return estado.nome;
-    });
+  deleteById(id:number){
+    this.processoService.delete(id).subscribe(retornoApi =>{
+      this.carregarProcessos();
+      alert("Processo Deletado")
+    })
+  }
+
+  findById(p:Processo){
+    const processoTransf = p;
+    this.router.navigate(['/form'],{state:{processo:processoTransf}})
   }
 
   formatarNpu(npu:string):string{
@@ -51,5 +57,8 @@ export class TabelaProcessosComponent {
     this.carregarProcessos();
   }
 
+  AfterViewInit(){
+    this.carregarProcessos();
+  }
   
 }

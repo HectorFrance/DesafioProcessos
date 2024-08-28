@@ -5,7 +5,7 @@ img{
 
 form{
     width: 500px;
-    margin: 30px auto;
+    margin:auto;
     text-align: center;
 }
 
@@ -15,4 +15,9 @@ input, select{
 
 input[type="button"]{
     margin-right: 10px;
+}
+
+label{
+    display: block;
+    text-align: left;
 }

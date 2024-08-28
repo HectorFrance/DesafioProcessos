@@ -16,4 +16,16 @@ export class ProcessoService {
   getAll():Observable<Processo[]>{
     return this.http.get<Processo[]>(this.url);
   }
+
+  create(obj:Processo):Observable<Processo>{
+    return this.http.post<Processo>(this.url,obj);
+  }
+
+  update(obj:Processo):Observable<Processo>{
+    return this.http.put<Processo>(this.url+"/"+obj.id,obj);
+  }
+
+  delete(id:number):Observable<Processo>{
+    return this.http.delete<Processo>(this.url+"/"+id);
+  }
 }

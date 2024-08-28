@@ -4,9 +4,9 @@ export class Processo{
     npu:string='';
     dataCadastro:Date= new Date;
     dataVisualizacao:Date = new Date;
-    uf:number = 0;
-    municipio:number = 0;
-
-
+    uf:string = '';
+    ufId:number=0;
+    municipio:string = '';
+    municipioId=0;
     
 }

@@ -1,23 +1,26 @@
 <form>
     <img src="../../assets/processo.png">
 
-    <input type="text" placeholder="NPU" class="form-control">
-    <input type="date" placeholder="Data De Cadastro" class="form-control">
-    <input type="date" placeholder="Data De Visualização" class="form-control">
+    <input type="text" placeholder="NPU" maxlength="20" class="form-control" name="npu" [(ngModel)]="processo.npu">
+    <label for="DataDeCadastro">Data De Cadastro</label>
+    <input type="date" id="DataDeCadastro" class="form-control" name="dataCadastro" [(ngModel)]="processo.dataCadastro">
+    <label for="DataDeVisualização">Data De Visualização</label>
+    <input type="date" id="DataDeVisualização" class="form-control" name="dataVisualizacao" [(ngModel)]="processo.dataVisualizacao">
     
-    <select class="form-select" aria-label="Default select example" (change)="selcionarEstado($event)">
-        <option selected disabled>Selecione o Estado</option>
+    <select class="form-select" aria-label="Default select example" (change)="selcionarEstado($event)" name="uf" [(ngModel)]="processo.uf">
+        <option selected disabled value='0'>Selecione o Estado</option>
         <option *ngFor="let uf of ufs" value={{uf.id}}>{{uf.nome}}</option>
-      
       </select>
 
-    <select class="form-select" aria-label="Default select example" [disabled]="selectMunicipioDisable" >
-        <option selected disabled>Selecione o Municipío</option> 
+    <select class="form-select" aria-label="Default select example" [disabled]="selectMunicipioDisable" name="municipio" [(ngModel)]="processo.municipio">
+        <option selected disabled value='0'>Selecione o Municipío</option> 
         <option *ngFor="let m of municipios" value={{m.id}}>{{m.nome}}</option>
     </select>
 
-    <input type="button" value="Cadastrar" *ngIf="btnCadastro" class="btn btn-primary">
+    <!-- <h1>{{processo | json}}</h1> -->
+
+    <a routerLink='/table'><input type="button" value="{{submit}}" *ngIf="btnCadastro" class="btn btn-primary" id="btn-cadastro" (click)="createOrUpdate()"></a>
     <input type="button" value="Alterar" *ngIf="!btnCadastro" class="btn btn-warning">
     <input type="button" value="Remover" *ngIf="!btnCadastro" class="btn btn-danger">
-    <input type="button" value="Cancelar" class="btn btn-secondary">
+    <a routerLink="/table"><input type="button" value="Cancelar" class="btn btn-secondary"></a>
 </form>

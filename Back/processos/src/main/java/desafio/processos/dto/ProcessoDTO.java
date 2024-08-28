@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,64 +19,44 @@ public class ProcessoDTO {
 
     private String npu;
 
-    private LocalDate dataCadatro;
+    private LocalDate dataCadastro;
 
     private LocalDate dataVisualizacao;
 
-    private MunicipioDTO municipio;
+    private String municipio;
 
-    private  UfDTO uf;
+    private  String uf;
 
-    public ProcessoDTO(String npu, LocalDate dataCadatro, LocalDate dataVisualizacao, Long municipio, Long uf) {
-        UfController ufController = new UfController();
-        MunicipioController municipioController = new MunicipioController();
+    private Long municipioId;
 
-        this.npu = npu;
-        this.dataCadatro = dataCadatro;
-        this.dataVisualizacao = dataVisualizacao;
-        this.municipio = municipioController.consultarMunicipioPorID(municipio).getBody();
-        this.uf = ufController.consultarUfPorId(uf).getBody();
+    private  Long ufId;
+
+
+
+    public ProcessoDTO(Processo p, MunicipioController mc, UfController uc){
+        MunicipioDTO municipioDTO= mc.consultarMunicipioPorID(p.getMunicipio()).getBody();
+        UfDTO ufDTO= uc.consultarUfPorId(p.getUf()).getBody();
+        this.id=p.getId();
+        this.npu=p.getNpu();
+        this.dataCadastro=p.getDataCadastro();
+        this.dataVisualizacao=p.getDataVisualizacao();
+        this.uf=ufDTO.getNome();
+        this.ufId=ufDTO.getId();
+        this.municipio=municipioDTO.getNome();
+        this.municipioId=municipioDTO.getId();
+
     }
 
-    public ProcessoDTO(Long id,String npu, LocalDate dataCadatro, LocalDate dataVisualizacao, Long municipio, Long uf) {
-        UfController ufController = new UfController();
-        MunicipioController municipioController = new MunicipioController();
 
-        this.id=id;
-        this.npu = npu;
-        this.dataCadatro = dataCadatro;
-        this.dataVisualizacao = dataVisualizacao;
-        this.municipio = municipioController.consultarMunicipioPorID(municipio).getBody();
-        this.uf = ufController.consultarUfPorId(uf).getBody();
+    public List<ProcessoDTO> transformarLista(List<Processo> lp, MunicipioController mc, UfController uc){
+        List<ProcessoDTO> listaProcessoDTO = new ArrayList<ProcessoDTO>();
+
+        for(Processo p: lp){
+        ProcessoDTO pd = new ProcessoDTO(p,mc,uc);
+        listaProcessoDTO.add(pd);
+        }
+
+        return  listaProcessoDTO;
     }
-    public Processo transformarDTOemPRocesso(ProcessoService processoService){
 
-                Processo processo = new Processo();
-
-                processo.setNpu(this.npu);
-                processo.setDataVisualizacao(this.dataVisualizacao);
-                processo.setDataCadastro(this.dataCadatro);
-                processo.setUf(this.uf.getId());
-                processo.setMunicipio(this.municipio.getId());
-
-                processo = processoService.create(processo);
-
-                return processo;
-            };
-
-    public ProcessoDTO transformarPRocessoEmDTIO(Processo p){
-
-        ProcessoDTO processoDTO = new ProcessoDTO();
-        UfController ufController = new UfController();
-        MunicipioController municipioController = new MunicipioController();
-
-
-        this.setId(p.getId());
-        this.setNpu(p.getNpu());
-        this.setUf(ufController.consultarUfPorId(p.getUf()).getBody());
-        this.setMunicipio(municipioController.consultarMunicipioPorID(p.getMunicipio()).getBody());
-
-
-        return processoDTO;
-    };
 }
