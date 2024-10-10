@@ -17,11 +17,11 @@
             <td>{{p.uf}}</td>
             <td>{{p.municipio}}</td>
             <td>
-                <a routerLink='/form'><button class="btn-opc" (click)="findById(p)"><img src="../../assets/editpng.png" class="img-opc"></button></a>
+                <a [routerLink]="['/form',p.id]"><button class="btn-opc"><img src="../../assets/editpng.png" class="img-opc"></button></a>
                 <button class="btn-opc" (click)="deleteById(p.id)"><img src="../../assets/delete.png" class="img-opc"></button>
             </td>
         </tr>
     </tbody>
 </table>
 
-<a routerLink='/form' class="centro"><button class="botao destaque">Cadastrar Processo</button></a>
+<a  [routerLink]="['/form',0]" class="centro"><button class="botao destaque">Cadastrar Processo</button></a>

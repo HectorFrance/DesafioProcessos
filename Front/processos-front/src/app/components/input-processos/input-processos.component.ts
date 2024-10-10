@@ -8,94 +8,107 @@ import { Municipio } from '../../model/Municipio';
 import { MunicipioService } from '../../service/municipio.service';
 import { Processo } from '../../model/Processo';
 import { ProcessoService } from '../../service/processo.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-input-processos',
   standalone: true,
-  imports: [FormsModule, CommonModule,HttpClientModule, RouterLink],
+  imports: [FormsModule, CommonModule, HttpClientModule, RouterLink],
   templateUrl: './input-processos.component.html',
   styleUrl: './input-processos.component.css'
 })
 export class InputProcessosComponent {
 
-  constructor(private ufService:UfService, private municipioService:MunicipioService, 
-    private processoService:ProcessoService, private router: Router){
+  constructor(private ufService: UfService, private municipioService: MunicipioService,
+    private processoService: ProcessoService, private router: Router, private route: ActivatedRoute) {
 
   }
   processo: Processo = new Processo;
-  ufs:Uf[]=[];
-  municipios:Municipio[]=[];
-  ufSelecionada:number = 0;
-  municipioSelecionada:number=0;
-  btnCadastro:boolean =true;
-  selectMunicipioDisable:boolean=true;
+  ufs: Uf[] = [];
+  municipios: Municipio[] = [];
+  ufSelecionada: number = 0;
+  municipioSelecionada: number = 0;
+  btnCadastro: boolean = true;
+  selectMunicipioDisable: boolean = true;
   submit: string = "Cadastrar";
+  id: number = 0;
 
 
   createOrUpdate(): void {
-    
-    if(this.processo.id>0){
+
+    if (this.processo.id > 0) {
       this.updateProcesso();
-    }else{
+    } else {
       this.createProcesso();
     }
   }
 
 
-  createProcesso():void{
+  createProcesso(): void {
     this.processoService.create(this.processo).subscribe(retornoApi => {
-      
-      this.processo=new Processo();
+
+      this.processo = new Processo();
       alert("Processo Cadastrado com sucesso")
-      })
+    })
   }
 
-  updateProcesso():void{
-    this.processoService.update(this.processo).subscribe(retornoApi =>{
+  updateProcesso(): void {
+    this.processoService.update(this.processo).subscribe(retornoApi => {
       alert("Processo Alterado")
     })
   }
 
-  carregarEstados():void{
-
-    this.ufService.getAll()
-    .subscribe(retornoApi => this.ufs = retornoApi);
+   carregarProcesso(id: number) {
+    let p: Processo = new Processo
+     this.processoService.getById(id)
+      .subscribe(retornoApi => {
+        this.processo=retornoApi;
+        this.processo.uf = this.processo.ufId + "";
+        this.carregarMunicipios(this.processo.ufId);
+        this.processo.municipio = this.processo.municipioId + "";
+        console.log(retornoApi)
+      });
+      
   }
 
-  carregarMunicipios(uf:number):void{
+  carregarEstados(): void {
+
+    this.ufService.getAll()
+      .subscribe(retornoApi => this.ufs = retornoApi);
+  }
+
+  carregarMunicipios(uf: number): void {
     this.municipioService.getAllByUf(uf).subscribe(retornoApi => this.municipios = retornoApi)
   }
 
-  selcionarEstado(event:Event):void{
-    
+  selcionarEstado(event: Event): void {
+
     const estado = (event.target as HTMLSelectElement).value;
     console.log(event)
     console.log(estado)
 
-    if(estado !== 'Selecione o Estado'){
-      this.selectMunicipioDisable=false
+    if (estado !== 'Selecione o Estado') {
+      this.selectMunicipioDisable = false
     }
-    this.processo.municipio="0";
+    this.processo.municipio = "0";
     this.carregarMunicipios(parseInt(estado));
-    
+
   }
 
-  ngOnInit(){
+   ngOnInit() {
+
     this.carregarEstados();
-    this.processo.municipio="0";
-    this.processo.uf="0";
+    this.processo.municipio = "0";
+    this.processo.uf = "0";
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log(this.id)
 
-    if(history.state.processo.id>0){
+    if (this.id > 0) {
       this.submit = "Alterar"
-      this.processo=history.state.processo;
-      this.processo.uf= this.processo.ufId+"";
-      this.carregarMunicipios(this.processo.ufId);
-      this.processo.municipio= this.processo.municipioId+"";
-
-    }
+      this.carregarProcesso(this.id);
+    } 
   }
 
-  
+
 }

@@ -4,5 +4,5 @@ import { InputProcessosComponent } from './components/input-processos/input-proc
 
 export const routes: Routes = [
     {path:'table',component: TabelaProcessosComponent},
-    {path:'form', component: InputProcessosComponent}
+    {path:'form/:id', component: InputProcessosComponent}
 ];

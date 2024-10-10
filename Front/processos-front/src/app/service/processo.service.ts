@@ -13,6 +13,11 @@ export class ProcessoService {
   
   constructor(private http:HttpClient) { }
 
+
+  getById(id:number):Observable<Processo>{
+    return this.http.get<Processo>(this.url+"/"+id)
+  }
+
   getAll():Observable<Processo[]>{
     return this.http.get<Processo[]>(this.url);
   }
